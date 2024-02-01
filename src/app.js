@@ -21,13 +21,17 @@ const whiteList = ['http://localhost:5173']
 
 const corsOptions = {
     origin: function (origin, callback) {
-        if (whiteList.indexOf(origin) != -1 || !origin) {
-            callback(null, true)
+        if (whiteList.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
         } else {
-            callback(new Error("Acceso denegado"))
+            callback(new Error("Acceso denegado"));
         }
-    }
-}
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+    allowedHeaders: 'Content-Type,Authorization',
+};
 
 const app = express()
 const PORT = 8080;
@@ -64,7 +68,7 @@ const specs = swaggerJSDoc(swaggerOptions)
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json())
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
 app.use(cookieParser(process.env.SIGNED_COOKIE))
 app.use(session({
     store: MongoStore.create({
