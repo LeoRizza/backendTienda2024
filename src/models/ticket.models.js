@@ -23,7 +23,7 @@ const ticketSchema = new Schema({
 });
 
 ticketSchema.pre("findOne", function () {
-    this.populate("purchaser", 'first_name last_name email');
+    this.populate("purchaser", 'email');
 });
 
 export const ticketModel = model("ticket", ticketSchema)
